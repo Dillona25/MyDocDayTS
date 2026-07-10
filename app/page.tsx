@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "./components/common/button";
+import Link from "next/link";
 
 const features = [
   {
@@ -39,7 +40,9 @@ export default function Home() {
 
           <div className="flex items-center gap-6">
             <Button buttonText="Sign in" />
-            <Button buttonText="Sign up" varient="primary" />
+            <Link href="/onboarding/">
+              <Button buttonText="Sign up" varient="primary" />
+            </Link>
           </div>
         </div>
       </nav>
@@ -61,7 +64,9 @@ export default function Home() {
                   reminders, and the health details you need to keep close.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-4">
-                  <Button varient="primary" buttonText="Get Organized" />
+                  <Link href="/onboarding/">
+                    <Button varient="primary" buttonText="Get Organized" />
+                  </Link>
                   <a href="#features" className="button-secondary">
                     Explore Features
                   </a>
@@ -141,7 +146,9 @@ export default function Home() {
               </div>
               <div className="col-12 lg:col-4">
                 <div className="flex lg:justify-end">
-                  <Button varient="primary" buttonText="Create Account" />
+                  <Link href="/onboarding/">
+                    <Button varient="primary" buttonText="Create Account" />
+                  </Link>
                 </div>
               </div>
             </div>
