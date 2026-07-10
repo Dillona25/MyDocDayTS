@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Button } from "./components/common/button";
 
 const features = [
   {
@@ -31,39 +32,14 @@ export default function Home() {
             href="#top"
             aria-label="MyDocDay home"
           >
-            <span className="grid size-10 place-items-center rounded-md bg-secondary text-lg font-bold text-primary">
-              M
-            </span>
             <span className="text-lg font-bold tracking-tight text-white">
               MyDocDay
             </span>
           </a>
 
-          <div className="hidden items-center gap-8 md:flex">
-            <a className="nav-link" href="#features">
-              Features
-            </a>
-            <a className="nav-link" href="#how-it-works">
-              How it works
-            </a>
-            <a className="nav-link" href="#get-started">
-              Get started
-            </a>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <a
-              className="hidden text-sm font-semibold text-slate-300 transition hover:text-white sm:block"
-              href="#"
-            >
-              Sign in
-            </a>
-            <a
-              className="rounded-md bg-secondary px-4 py-2.5 text-sm font-bold text-primary transition hover:bg-white"
-              href="#"
-            >
-              Sign up
-            </a>
+          <div className="flex items-center gap-6">
+            <Button buttonText="Sign in" />
+            <Button buttonText="Sign up" varient="primary" />
           </div>
         </div>
       </nav>
@@ -85,11 +61,9 @@ export default function Home() {
                   reminders, and the health details you need to keep close.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-4">
-                  <a className="button-primary" href="#">
-                    Start organizing
-                  </a>
-                  <a className="button-secondary" href="#features">
-                    Explore features <span aria-hidden="true">→</span>
+                  <Button varient="primary" buttonText="Get Organized" />
+                  <a href="#features" className="button-secondary">
+                    Explore Features
                   </a>
                 </div>
               </div>
@@ -167,9 +141,7 @@ export default function Home() {
               </div>
               <div className="col-12 lg:col-4">
                 <div className="flex lg:justify-end">
-                  <a className="button-primary whitespace-nowrap" href="#">
-                    Create your account
-                  </a>
+                  <Button varient="primary" buttonText="Create Account" />
                 </div>
               </div>
             </div>
