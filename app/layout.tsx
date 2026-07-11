@@ -16,7 +16,11 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         {/* This root-layout stylesheet applies the shared brand fonts app-wide. */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link

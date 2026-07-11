@@ -1,4 +1,6 @@
+"use client";
 import type { ReactNode } from "react";
+import { OnboardingProvider } from "../store/onboardingStepsContext";
 
 export default function OnboardingLayout({
   children,
@@ -8,7 +10,7 @@ export default function OnboardingLayout({
   return (
     <main>
       {/* Shared onboarding UI, such as progress, can go above children. */}
-      {children}
+      <OnboardingProvider>{children}</OnboardingProvider>
     </main>
   );
 }
