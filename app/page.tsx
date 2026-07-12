@@ -56,7 +56,9 @@ export default function Home() {
           <div className="row items-center [--gutter-y:3.5rem] lg:[--gutter-x:4rem]">
             <div className="col-12 lg:col-6">
               <div className="max-w-2xl">
-                <span className="eyebrow">Organize. Plan. Stay ahead.</span>
+                <span className="inline-flex items-center border-l-[3px] border-secondary py-[0.15rem] pl-[0.7rem] text-[0.72rem] font-extrabold uppercase leading-none tracking-[0.16em] text-[#b9efed]">
+                  Organize. Plan. Stay ahead.
+                </span>
                 <h1 className="mt-7 text-5xl font-bold leading-[1.04] tracking-[-0.035em] sm:text-6xl lg:text-6xl">
                   Your healthcare, finally in one place.
                 </h1>
@@ -76,7 +78,7 @@ export default function Home() {
             </div>
 
             <div className="col-12 lg:col-6">
-              <div className="hero-image-shell">
+              <div className="rounded-xl border border-white/15 bg-white/[0.07] p-[0.8rem] shadow-[0_35px_80px_rgb(0_0_0/35%)] backdrop-blur-[18px] md:[transform:perspective(1200px)_rotateY(-1deg)]">
                 <div className="mb-3 flex items-center gap-1.5 px-1">
                   <span className="size-2 rounded-full bg-secondary" />
                   <span className="size-2 rounded-full bg-primary-light" />
@@ -100,13 +102,13 @@ export default function Home() {
         <div className="container">
           <div className="row [--gutter-y:2rem] lg:[--gutter-x:3rem]">
             <div className="col-12 lg:col-5">
-              <span className="eyebrow eyebrow-dark">
+              <span className="inline-flex items-center border-l-[3px] border-secondary py-[0.15rem] pl-[0.7rem] text-[0.72rem] font-extrabold uppercase leading-none tracking-[0.16em] text-primary">
                 Your personal health hub
               </span>
-              <h2 className="section-title mt-6">
+              <h2 className="mt-6 max-w-2xl text-[clamp(2.5rem,5vw,4.25rem)] font-bold leading-[1.08] tracking-[-0.035em] text-slate-950">
                 Less portal hopping. More clarity.
               </h2>
-              <p className="section-copy mt-6 max-w-lg">
+              <p className="mt-6 max-w-lg text-lg leading-[1.8] text-slate-500">
                 The MVP brings the practical parts of managing your healthcare
                 into one focused, easy-to-use place.
               </p>
@@ -115,8 +117,10 @@ export default function Home() {
               <div className="row [--gutter-y:1rem]">
                 {features.map((feature) => (
                   <div className="col-12" key={feature.number}>
-                    <article className="feature-card">
-                      <span className="feature-number">{feature.number}</span>
+                    <article className="flex gap-5 rounded-xl border border-slate-200 bg-white/[0.86] p-6 shadow-[0_10px_28px_rgb(31_53_87/6%)] transition-[border-color,transform,box-shadow] duration-[180ms] hover:-translate-y-0.5 hover:border-[#8bb4b2] hover:shadow-[0_14px_34px_rgb(31_53_87/9%)]">
+                      <span className="grid size-11 shrink-0 place-items-center rounded-[0.4rem] bg-[#dff4f3] text-xs font-black text-primary">
+                        {feature.number}
+                      </span>
                       <div>
                         <h3 className="text-xl font-bold tracking-tight">
                           {feature.title}
@@ -136,10 +140,12 @@ export default function Home() {
 
       <section className="py-20 lg:pb-20 lg:pt-0" id="get-started">
         <div className="container">
-          <div className="cta-panel">
+          <div className="cta-panel relative overflow-hidden rounded-2xl p-[clamp(2rem,6vw,5rem)] shadow-[0_24px_60px_rgb(31_53_87/18%)]">
             <div className="row items-center [--gutter-y:2rem]">
               <div className="col-12 lg:col-8">
-                <span className="eyebrow">Your health, with more clarity</span>
+                <span className="inline-flex items-center border-l-[3px] border-secondary py-[0.15rem] pl-[0.7rem] text-[0.72rem] font-extrabold uppercase leading-none tracking-[0.16em] text-[#b9efed]">
+                  Your health, with more clarity
+                </span>
                 <h2 className="mt-6 max-w-3xl text-4xl font-bold tracking-[-0.025em] text-white sm:text-5xl">
                   Keep your healthcare details together and your next step
                   clear.

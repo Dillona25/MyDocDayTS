@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "../components/common/button";
+import { Input } from "../components/forms/input";
 import { useOnboardingNavigation } from "../hooks/useOnboardingNavigation";
 
 export default function SignupOnboardingPage() {
@@ -15,6 +16,7 @@ export default function SignupOnboardingPage() {
             buttonText="Next Step"
             onClick={() => handleNextStep("/onboarding/doctors")}
           />
+          <Input />
         </div>
       </div>
     </div>
