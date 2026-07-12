@@ -2,14 +2,22 @@
 import type { ReactNode } from "react";
 import { OnboardingProvider } from "../store/onboardingStepsContext";
 import "../styles/onboardingProgress.css";
+import { mockUser } from "../lib/mockUser";
 
 export default function OnboardingLayout({
   children,
 }: {
   children: ReactNode;
 }) {
+  const currentStep = mockUser.onboarding.currentStep;
+  const completedSteps = mockUser.onboarding.completedSteps;
+  const steps = [
+    { id: 1, label: "Create Account" },
+    { id: 2, label: "Add Providers" },
+    { id: 3, label: "Add Appointments" },
+  ];
+
   return (
-    // Todo: This UI needs to update CSS dynamically using mockUser data (completed, step, etc.)
     <main>
       {/* Progress Bar TSX */}
       <nav
@@ -21,35 +29,29 @@ export default function OnboardingLayout({
             className="progress-tracker col-12 mx-auto grid grid-cols-3 items-start md:col-8"
             role="list"
           >
-            <li
-              className="progress-step progress-step--active relative flex min-w-0 flex-col items-center text-center"
-              aria-current="step"
-            >
-              <span className="progress-step__number text-sm font-semibold grid place-items-center position-relative z-1 w-10 h-10">
-                1
-              </span>
-              <span className="hidden sm:block progress-step__label mt-3 text-sm font-medium sm:text-base">
-                Create Account
-              </span>
-            </li>
+            {steps.map((step) => {
+              // Does our current step equal the step ID from the steps map
+              // Does our current step.id exist in completed steps on the user? If so, we can assume its complete
+              const isActive = currentStep === step.id;
+              const isComplete = completedSteps.includes(step.id);
+              const stepClass = `progress-step relative flex min-w-0 flex-col items-center text-center ${isComplete ? "progress-step--complete" : ""} ${isActive ? "progress-step--active" : ""}`;
 
-            <li className="progress-step relative flex min-w-0 flex-col items-center text-center">
-              <span className="progress-step__number text-sm font-semibold grid place-items-center position-relative z-1 w-10 h-10">
-                2
-              </span>
-              <span className="hidden sm:block progress-step__label mt-3 text-sm font-medium sm:text-base">
-                Add Providers
-              </span>
-            </li>
-
-            <li className="progress-step relative flex min-w-0 flex-col items-center text-center">
-              <span className="progress-step__number text-sm font-semibold grid place-items-center position-relative z-1 w-10 h-10">
-                3
-              </span>
-              <span className="hidden sm:block progress-step__label mt-3 text-sm font-medium sm:text-base">
-                Add Appointments
-              </span>
-            </li>
+              return (
+                <li
+                  key={step.id}
+                  id={`step-${step.id}`}
+                  className={stepClass}
+                  aria-current="step"
+                >
+                  <span className="progress-step__number text-sm font-semibold grid place-items-center position-relative z-1 w-10 h-10">
+                    {step.id}
+                  </span>
+                  <span className="hidden sm:block progress-step__label mt-3 text-sm font-medium sm:text-base">
+                    {step.label}
+                  </span>
+                </li>
+              );
+            })}
           </ol>
         </div>
       </nav>
