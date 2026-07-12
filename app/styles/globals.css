@@ -12,7 +12,7 @@
 
 body {
   margin: 0;
-  background: #f7f8fc;
+  background: #fbfbfb;
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
 }
@@ -192,4 +192,8 @@ h6 {
   flex: 0 0 auto;
   grid-column: auto;
   width: 100%;
+}
+
+@utility text-body {
+  color: #7a8b9e;
 }

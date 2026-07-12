@@ -1,17 +1,31 @@
-.progress-step {
+.progress-tracker {
   position: relative;
 }
 
-.progress-step:not(:last-child)::after {
+.progress-tracker::before {
   position: absolute;
   z-index: 0;
   top: 1.25rem;
-  left: 50%;
-  width: 100%;
+  right: 2rem;
+  left: 2rem;
   height: 0.3rem;
   background: #c9c9c9;
   content: "";
   transform: translateY(-50%);
+}
+
+.progress-step {
+  position: relative;
+}
+
+.progress-step:first-child {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.progress-step:last-child {
+  align-items: flex-end;
+  text-align: right;
 }
 
 .progress-step__number {
@@ -39,7 +53,6 @@
   font-weight: 600;
 }
 
-.progress-step--complete::after,
 .progress-step--complete .progress-step__number {
   border: none;
   background: var(--color-success);

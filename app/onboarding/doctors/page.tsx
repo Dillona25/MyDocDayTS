@@ -10,7 +10,7 @@ export default function DoctorsOnboardingPage() {
   return (
     <div className="container">
       <div className="row">
-        <div className="col-12">
+        <div className="col-12 mx-auto md:col-9">
           <Button
             varient="secondary"
             buttonText="Previous Step"

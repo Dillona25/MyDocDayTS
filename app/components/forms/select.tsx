@@ -1,20 +1,15 @@
-import type { ChangeEventHandler } from "react";
+interface SelectOption {
+  label: string;
+  value: string;
+}
 
 interface Types {
   LabelText: string;
-  placeholder?: string;
   required: boolean;
-  type?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
+  options: readonly SelectOption[];
 }
 
-export const Input = ({
-  LabelText,
-  required,
-  placeholder,
-  type,
-  onChange,
-}: Types) => {
+export const Select = ({ LabelText, required, options }: Types) => {
   return (
     <div className="flex flex-col">
       <fieldset className="group min-w-0 rounded-lg border border-gray-500 px-3 focus-within:border-secondary">
@@ -26,13 +21,20 @@ export const Input = ({
             </span>
           )}
         </legend>
-        <input
-          type={type}
+        <select
           required={required}
-          placeholder={placeholder}
-          onChange={onChange}
+          defaultValue=""
           className="w-full bg-transparent pb-2 pt-1 outline-none"
-        />
+        >
+          <option className="text-sm" value="" disabled>
+            Select a state
+          </option>
+          {options.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
       </fieldset>
     </div>
   );
