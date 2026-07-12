@@ -1,32 +1,23 @@
 // Onboarding steps context that manages our onboarding state
-// Tracks current step, previous step, next step, total steps
+// Todo: Replace mock user with actual user data when API is connected
 
 "use client";
 
 interface onboardingType {
   step: number;
-  totalSteps: number;
-  nextStep: () => void;
+  completedSteps: number[];
+  isComplete: boolean;
   prevStep: () => void;
-  goToStep: (newStep: number) => void;
+  completeCurrentStep: () => void;
 }
 
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { mockUser } from "../lib/mockUser";
 
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 const OnboardingContext = createContext<onboardingType | null>(null);
 
 export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
-  const router = useRouter();
-
   // An array of each step route that we can recognize with the pathname
   const stepRoutes = [
     "/onboarding",
@@ -34,38 +25,46 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
     "/onboarding/appointments",
   ];
 
-  const [step, setStep] = useState<number>(1);
-  const totalSteps = stepRoutes.length;
-  const pathname = usePathname();
+  const [step, setStep] = useState<number>(mockUser.onboarding.currentStep);
+  const [completedSteps, setCompletedSteps] = useState<number[]>(
+    mockUser.onboarding.completedSteps,
+  );
+  const [isComplete, setIsComplete] = useState<boolean>(
+    mockUser.onboarding.isComplete,
+  );
 
-  // Setting our step, this runs each time the pathname changes
-  useEffect(() => {
-    const index = stepRoutes.indexOf(pathname);
-    if (index !== -1) setStep(index + 1);
-  }, [pathname]);
-
-  console.log(step);
-
-  const goToStep = (newStep: number) => {
-    if (newStep >= 1 && newStep <= totalSteps) {
-      setStep(newStep);
-      router.push(stepRoutes[newStep - 1]);
-    }
-  };
-
-  // Next Step
-  const nextStep = () => {
-    goToStep(step + 1);
-  };
-
-  // Prev Step
   const prevStep = () => {
-    goToStep(step - 1);
+    // Math max here does not let us go below 1 since we do not have a step 0..
+    setStep((step) => Math.max(1, step - 1));
+  };
+
+  const completeCurrentStep = () => {
+    setCompletedSteps((completedSteps) => {
+      if (completedSteps.includes(step)) {
+        return completedSteps;
+      }
+
+      return [...completedSteps, step];
+    });
+
+    // If its step equals the last step, mark onboarding as complete and stop the function here with return.
+    if (step === stepRoutes.length) {
+      setIsComplete(true);
+      return;
+    }
+
+    setStep((step) => Math.min(stepRoutes.length, step + 1));
   };
 
   return (
     <OnboardingContext.Provider
-      value={{ step, totalSteps, nextStep, prevStep, goToStep }}
+      value={{
+        step,
+        completedSteps,
+        isComplete,
+        prevStep,
+        completeCurrentStep,
+      }}
     >
       {children}
     </OnboardingContext.Provider>

@@ -9,6 +9,7 @@ export default function OnboardingLayout({
   children: ReactNode;
 }) {
   return (
+    // Todo: This UI needs to update CSS dynamically using mockUser data (completed, step, etc.)
     <main>
       {/* Progress Bar TSX */}
       <nav
