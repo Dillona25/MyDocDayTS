@@ -4,6 +4,7 @@ interface btnProps {
   varient?: string;
   disabled?: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
 
 export const Button = ({
@@ -11,6 +12,7 @@ export const Button = ({
   className,
   varient,
   disabled,
+  type,
   onClick,
 }: btnProps) => {
   let btnClass = "";
@@ -26,6 +28,7 @@ export const Button = ({
 
   return (
     <button
+      type={type}
       disabled={disabled}
       onClick={onClick}
       className={btnClass !== "" ? btnClass : baseClass}

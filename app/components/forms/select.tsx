@@ -1,3 +1,5 @@
+import { ChangeEventHandler } from "react";
+
 interface SelectOption {
   label: string;
   value: string;
@@ -7,9 +9,17 @@ interface Types {
   LabelText: string;
   required: boolean;
   options: readonly SelectOption[];
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLSelectElement>;
 }
 
-export const Select = ({ LabelText, required, options }: Types) => {
+export const Select = ({
+  LabelText,
+  required,
+  options,
+  value,
+  onChange,
+}: Types) => {
   return (
     <div className="flex flex-col">
       <fieldset className="group min-w-0 rounded-lg border border-gray-500 px-3 focus-within:border-secondary">
@@ -23,7 +33,8 @@ export const Select = ({ LabelText, required, options }: Types) => {
         </legend>
         <select
           required={required}
-          defaultValue=""
+          value={value}
+          onChange={onChange}
           className="w-full bg-transparent pb-2 pt-1 outline-none"
         >
           <option className="text-sm" value="" disabled>

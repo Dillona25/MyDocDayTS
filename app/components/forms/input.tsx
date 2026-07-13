@@ -5,6 +5,7 @@ interface Types {
   placeholder?: string;
   required: boolean;
   type?: string;
+  value?: string;
   onChange?: ChangeEventHandler<HTMLInputElement>;
 }
 
@@ -13,6 +14,7 @@ export const Input = ({
   required,
   placeholder,
   type,
+  value,
   onChange,
 }: Types) => {
   return (
@@ -28,6 +30,7 @@ export const Input = ({
         </legend>
         <input
           type={type}
+          value={value}
           required={required}
           placeholder={placeholder}
           onChange={onChange}
