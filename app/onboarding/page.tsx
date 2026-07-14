@@ -20,7 +20,7 @@ export default function SignupOnboardingPage() {
     state: "",
   });
 
-  async function handleSubmit(event: SubmitEvent) {
+  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
     try {
       event.preventDefault();
       const user = await createUser(formData);
@@ -123,7 +123,6 @@ export default function SignupOnboardingPage() {
                   varient="primary"
                   type="submit"
                   buttonText="Next Step"
-                  onClick={() => handleSubmit()}
                 />
               </div>
             </div>
