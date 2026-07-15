@@ -1,5 +1,6 @@
 import { createUserSchema } from "@/backend/services/users/user-schema";
 import { createUser } from "@/backend/services/users/create-user";
+import { handleApiError } from "@/backend/errors/handle-api-error";
 export const runtime = "nodejs";
 
 // Send a POST to api/users/ (following the file path, similar to frontend creating pages)
@@ -32,40 +33,6 @@ export async function POST(request: Request): Promise<Response> {
       { status: 201 },
     );
   } catch (error) {
-    console.error("POST /api/users failed:", error);
-
-    if (isPostgresUniqueViolation(error)) {
-      return Response.json(
-        {
-          message: "A user with that email already exists.",
-        },
-        { status: 409 },
-      );
-    }
-
-    if (error instanceof SyntaxError) {
-      return Response.json(
-        {
-          message: "The request body must contain valid JSON.",
-        },
-        { status: 400 },
-      );
-    }
-
-    return Response.json(
-      {
-        message: "An unexpected error occurred while creating the user.",
-      },
-      { status: 500 },
-    );
+    return handleApiError(error, "POST /api/users");
   }
-}
-
-function isPostgresUniqueViolation(error: unknown): error is { code: string } {
-  return (
-    typeof error === "object" &&
-    error !== null &&
-    "code" in error &&
-    error.code === "23505"
-  );
 }

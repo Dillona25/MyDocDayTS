@@ -1,8 +1,16 @@
-// Reusbale logic so we dont repeat ourselves with every route
+// Reusable API error boundary so every route returns the same error shape.
+// This is where expected app errors and known lower-level errors become JSON.
 
 import { AppError } from "./app-error";
+import { mapDatabaseError } from "./database-error";
 
 export function handleApiError(error: unknown, context: string): Response {
+  const databaseError = mapDatabaseError(error);
+
+  if (databaseError) {
+    return handleApiError(databaseError, context);
+  }
+
   if (error instanceof AppError) {
     return Response.json(
       {

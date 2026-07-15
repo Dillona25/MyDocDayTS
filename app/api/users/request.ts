@@ -1,4 +1,5 @@
 import { CreateUserFormType } from "@/app/types/form-types";
+import { AppError } from "@/backend/errors/app-error";
 
 // We wont use a try block here, we will let it bubble up so we can catch at the component level
 export async function createUser(formData: CreateUserFormType) {
@@ -13,7 +14,12 @@ export async function createUser(formData: CreateUserFormType) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message ?? "Unable to create user.");
+    throw new AppError(
+      data.message ?? "Unable to create user.",
+      response.status,
+      data.code,
+      data.field,
+    );
   }
 
   return data;
