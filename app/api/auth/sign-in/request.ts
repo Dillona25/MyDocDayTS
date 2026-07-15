@@ -1,9 +1,9 @@
-import { CreateUserFormType } from "@/app/types/form-types";
+import { SignInFormType } from "@/app/types/form-types";
 import { AppError } from "@/backend/errors/app-error";
 
-// We wont use a try block here, we will let it bubble up so we can catch at the component level
-export async function createUser(formData: CreateUserFormType) {
-  const response = await fetch("/api/users", {
+// Let errors bubble up so the sign-in component can decide how to display them.
+export async function signInUser(formData: SignInFormType) {
+  const response = await fetch("/api/auth/sign-in", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -15,7 +15,7 @@ export async function createUser(formData: CreateUserFormType) {
 
   if (!response.ok) {
     throw new AppError(
-      data.message ?? "Unable to create user.",
+      data.message ?? "Unable to sign in.",
       response.status,
       data.code,
       data.field,

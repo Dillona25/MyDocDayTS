@@ -1,3 +1,4 @@
+// Input needed to create a new user account
 export type CreateUserInput = {
   email: string;
   password: string;
@@ -7,6 +8,7 @@ export type CreateUserInput = {
   state: string;
 };
 
+// Returned after account creation
 export type ReturnedUser = {
   id: number;
   email: string;
@@ -19,6 +21,7 @@ export type ReturnedUser = {
   updatedAt: string;
 };
 
+// Users table row returned by PostgreSQL
 export type UserRow = {
   id: number;
   email: string;

@@ -7,7 +7,7 @@ import { Select } from "../components/forms/select";
 import { usStates } from "../data/usStates";
 import { useOnboardingNavigation } from "../hooks/useOnboardingNavigation";
 import { CreateUserFormType } from "../types/form-types";
-import { createUser } from "../api/users/request";
+import { createUser } from "../api/auth/create-user/request";
 import { AppError } from "@/backend/errors/app-error";
 
 export default function SignupOnboardingPage() {

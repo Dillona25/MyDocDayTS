@@ -1,9 +1,9 @@
-import { createUserSchema } from "@/backend/services/users/user-schema";
-import { createUser } from "@/backend/services/users/create-user";
+import { createUserSchema } from "@/backend/services/auth/create-user/create-user-schema";
+import { createUser } from "@/backend/services/auth/create-user/create-user";
 import { handleApiError } from "@/backend/errors/handle-api-error";
 export const runtime = "nodejs";
 
-// Send a POST to api/users/ (following the file path, similar to frontend creating pages)
+// Send a POST to api/auth/create-user/ (following the file path, similar to frontend creating pages)
 export async function POST(request: Request): Promise<Response> {
   try {
     // Using unkown type because we DO NOT want to trust incoming data
@@ -33,6 +33,6 @@ export async function POST(request: Request): Promise<Response> {
       { status: 201 },
     );
   } catch (error) {
-    return handleApiError(error, "POST /api/users");
+    return handleApiError(error, "POST /api/auth/create-user");
   }
 }

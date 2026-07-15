@@ -4,7 +4,7 @@ import type {
   CreateUserInput,
   ReturnedUser,
   UserRow,
-} from "@/backend/services/users/user-types";
+} from "@/backend/services/auth/create-user/create-user-types";
 
 export async function createUser(
   input: CreateUserInput,

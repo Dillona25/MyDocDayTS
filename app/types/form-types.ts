@@ -6,3 +6,8 @@ export type CreateUserFormType = {
   city: string;
   state: string;
 };
+
+export type SignInFormType = {
+  email: string;
+  password: string;
+};

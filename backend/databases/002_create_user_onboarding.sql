@@ -1,0 +1,10 @@
+CREATE TABLE user_onboarding (
+    user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+
+    current_step INTEGER NOT NULL DEFAULT 1 CHECK (current_step >= 1),
+    completed_steps INTEGER[] NOT NULL DEFAULT '{}',
+    is_complete BOOLEAN NOT NULL DEFAULT FALSE,
+
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
