@@ -12,6 +12,7 @@ import { AppError } from "@/backend/errors/app-error";
 
 export default function SignupOnboardingPage() {
   const { handleNextStep } = useOnboardingNavigation();
+
   const [formData, setFormData] = useState<CreateUserFormType>({
     email: "",
     password: "",
@@ -33,10 +34,7 @@ export default function SignupOnboardingPage() {
     try {
       const user = await createUser(formData);
       handleNextStep("/onboarding/doctors");
-      // Here we can also do whatever else needed
     } catch (error) {
-      // Since we let the error bubble up in createUser, now we would catch
-      // Display toast or something
       if (error instanceof AppError && error.field === "email") {
         setErrors((current) => ({
           ...current,
@@ -50,6 +48,34 @@ export default function SignupOnboardingPage() {
         error instanceof Error ? error.message : "Unable to create user.",
       );
     }
+  }
+
+  // Just a lil helper for live password validation. We have min 8 for ZOD so we use min 8 here
+  function getPasswordError(password: string) {
+    if (password.length === 0) {
+      return "";
+    }
+
+    if (password.length < 8) {
+      return "Password must contain at least 8 characters.";
+    }
+
+    return "";
+  }
+
+  // Helper for live email validation. The backend still validates this with Zod.
+  function getEmailError(email: string) {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (email.length === 0) {
+      return "";
+    }
+
+    if (!emailPattern.test(email)) {
+      return "Enter a valid email address.";
+    }
+
+    return "";
   }
 
   return (
@@ -73,12 +99,19 @@ export default function SignupOnboardingPage() {
                 <Input
                   type="email"
                   value={formData.email}
-                  onChange={(event) =>
+                  onChange={(event) => {
+                    const email = event.target.value;
+
                     setFormData((current) => ({
                       ...current,
-                      email: event.target.value,
-                    }))
-                  }
+                      email,
+                    }));
+
+                    setErrors((current) => ({
+                      ...current,
+                      email: getEmailError(email),
+                    }));
+                  }}
                   required={true}
                   LabelText="Email"
                 />
@@ -89,9 +122,19 @@ export default function SignupOnboardingPage() {
               <div className="col-12 md:col-6">
                 <Input
                   value={formData.password}
-                  onChange={(event) =>
-                    setFormData({ ...formData, password: event.target.value })
-                  }
+                  onChange={(event) => {
+                    const password = event.target.value;
+
+                    setFormData((current) => ({
+                      ...current,
+                      password,
+                    }));
+
+                    setErrors((current) => ({
+                      ...current,
+                      password: getPasswordError(password),
+                    }));
+                  }}
                   required={true}
                   type="password"
                   LabelText="Password"
