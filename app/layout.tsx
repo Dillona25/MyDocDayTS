@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { SignInModal } from "./components/modals/sign-in-modal";
+import { ModalProvider } from "./store/modalContext";
 import "./styles/globals.css";
 
 export const metadata: Metadata = {
@@ -28,7 +30,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning>{children}</body>
+      <body suppressHydrationWarning>
+        <ModalProvider>
+          {children}
+          <SignInModal />
+        </ModalProvider>
+      </body>
     </html>
   );
 }

@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import { Button } from "./components/common/button";
+import { useModal } from "./store/modalContext";
 import Link from "next/link";
 import "./styles/landingPage.css";
 
@@ -25,6 +28,8 @@ const features = [
 ];
 
 export default function Home() {
+  const { openSignInModal } = useModal();
+
   return (
     <main className="overflow-hidden bg-[#f4f7fa] text-slate-950">
       <nav className="absolute inset-x-0 top-0 z-20 border-b border-white/10 bg-primary/95 backdrop-blur-xl">
@@ -40,7 +45,7 @@ export default function Home() {
           </a>
 
           <div className="flex items-center gap-6">
-            <Button buttonText="Sign in" />
+            <Button buttonText="Sign in" onClick={openSignInModal} />
             <Link href="/onboarding/">
               <Button buttonText="Sign up" varient="primary" />
             </Link>
