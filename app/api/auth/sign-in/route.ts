@@ -31,6 +31,7 @@ export async function POST(request: Request): Promise<Response> {
       { status: 200 },
     );
 
+    // Seeting a session cookie after sign in.
     response.cookies.set({
       name: SESSION_COOKIE_NAME,
       value: session.id,

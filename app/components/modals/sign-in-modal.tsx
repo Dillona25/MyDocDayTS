@@ -45,6 +45,8 @@ export const SignInModal = () => {
       } else {
         router.push(onboardingStepRoutes[user.onboarding.currentStep]);
       }
+
+      closeSignInModal();
     } catch (error) {
       console.log(error);
     }

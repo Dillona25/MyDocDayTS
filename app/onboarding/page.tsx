@@ -33,7 +33,7 @@ export default function SignupOnboardingPage() {
 
     try {
       const user = await createUser(formData);
-      handleNextStep("/onboarding/doctors");
+      await handleNextStep("/onboarding/doctors");
     } catch (error) {
       if (error instanceof AppError && error.field === "email") {
         setErrors((current) => ({
