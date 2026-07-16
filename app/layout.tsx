@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AddDoctorModal } from "./components/modals/add-doctor-modal";
 import { SignInModal } from "./components/modals/sign-in-modal";
 import { ModalProvider } from "./store/modalContext";
 import "./styles/globals.css";
@@ -34,6 +35,7 @@ export default function RootLayout({
         <ModalProvider>
           {children}
           <SignInModal />
+          <AddDoctorModal />
         </ModalProvider>
       </body>
     </html>

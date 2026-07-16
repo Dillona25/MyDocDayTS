@@ -24,7 +24,7 @@ export const Button = ({
     btnClass = "button-secondary cursor-pointer text-sm font-bold";
   }
 
-  let baseClass = `${className} text-sm font-bold text-white cursor-pointer`;
+  let baseClass = `text-sm font-bold cursor-pointer ${className ?? "text-white"}`;
 
   return (
     <button
