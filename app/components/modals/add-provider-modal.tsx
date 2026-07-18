@@ -7,10 +7,10 @@ import { usStates } from "@/app/data/usStates";
 import { Button } from "../common/button";
 import { providerTypes } from "@/app/data/providerTypes";
 
-export const AddDoctorModal = () => {
-  const { isAddDoctorModalOpen, closeAddDoctorModal } = useModal();
+export const AddProviderModal = () => {
+  const { isAddProviderModalOpen, closeAddProviderModal } = useModal();
 
-  if (!isAddDoctorModalOpen) {
+  if (!isAddProviderModalOpen) {
     return null;
   }
 
@@ -18,18 +18,18 @@ export const AddDoctorModal = () => {
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 px-4 py-8"
       role="presentation"
-      onMouseDown={closeAddDoctorModal}
+      onMouseDown={closeAddProviderModal}
     >
       <section
         aria-modal="true"
-        aria-labelledby="add-doctor-modal-title"
+        aria-labelledby="add-provider-modal-title"
         className="w-lg rounded-xl bg-white p-6 shadow-[0_24px_70px_rgb(15_23_42/28%)]"
         role="dialog"
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
           <h2
-            id="add-doctor-modal-title"
+            id="add-provider-modal-title"
             className="text-2xl font-semibold text-primary"
           >
             Add Provider
@@ -38,7 +38,7 @@ export const AddDoctorModal = () => {
             type="button"
             aria-label="Close add provider modal"
             className="grid size-9 shrink-0 place-items-center rounded-md text-2xl leading-none text-slate-400 hover:bg-slate-100 hover:text-slate-700 cursor-pointer"
-            onClick={closeAddDoctorModal}
+            onClick={closeAddProviderModal}
           >
             &times;
           </button>
@@ -54,7 +54,7 @@ export const AddDoctorModal = () => {
           </div>
           <div className="row mt-6">
             <div className="col-12">
-              <Input LabelText="Providers's Speacilty" required />
+              <Input LabelText="Provider Specialty" required />
             </div>
           </div>
           <div className="row mt-6">

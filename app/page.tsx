@@ -17,7 +17,7 @@ const features = [
     number: "02",
     title: "Your care team, organized",
     description:
-      "Manage doctors, specialists, offices, and contact information without searching through portals, emails, or paperwork.",
+      "Manage providers, specialists, offices, and contact information without searching through portals, emails, or paperwork.",
   },
   {
     number: "03",
@@ -68,7 +68,7 @@ export default function Home() {
                   Your healthcare, finally in one place.
                 </h1>
                 <p className="mt-7 max-w-xl text-lg leading-8 text-slate-300 sm:text-xl">
-                  MyDocDay is a simpler way to manage appointments, doctors,
+                  MyDocDay is a simpler way to manage appointments, providers,
                   reminders, and the health details you need to keep close.
                 </p>
                 <div className="mt-9 flex flex-wrap items-center gap-4">

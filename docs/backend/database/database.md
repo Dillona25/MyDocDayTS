@@ -8,7 +8,7 @@ Each migration represents **one schema change** and should be added in chronolog
 
 ```text
 001_create_users.sql
-002_create_doctors.sql
+002_create_providers.sql
 003_create_appointments.sql
 004_add_phone_to_users.sql
 ```

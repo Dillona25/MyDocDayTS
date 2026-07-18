@@ -23,7 +23,7 @@ export const SignInModal = () => {
   const [formError, setFormError] = useState("");
   const onboardingStepRoutes: OnboardingStepRoutes = {
     1: "/onboarding",
-    2: "/onboarding/doctors",
+    2: "/onboarding/providers",
     3: "/onboarding/appointments",
   };
 

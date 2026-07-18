@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AddDoctorModal } from "./components/modals/add-doctor-modal";
+import { AddProviderModal } from "./components/modals/add-provider-modal";
 import { SignInModal } from "./components/modals/sign-in-modal";
 import { ModalProvider } from "./store/modalContext";
 import "./styles/globals.css";
@@ -7,7 +7,7 @@ import "./styles/globals.css";
 export const metadata: Metadata = {
   title: "MyDocDay — Your Healthcare, Organized",
   description:
-    "Manage appointments, doctors, reminders, and your healthcare information in one simple personal health hub.",
+    "Manage appointments, providers, reminders, and your healthcare information in one simple personal health hub.",
 };
 
 export default function RootLayout({
@@ -35,7 +35,7 @@ export default function RootLayout({
         <ModalProvider>
           {children}
           <SignInModal />
-          <AddDoctorModal />
+          <AddProviderModal />
         </ModalProvider>
       </body>
     </html>

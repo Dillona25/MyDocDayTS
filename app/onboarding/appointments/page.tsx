@@ -12,7 +12,7 @@ export default function AppointmentsOnboardingPage() {
           <Button
             varient="secondary"
             buttonText="Previous Step"
-            onClick={() => handlePreviousStep("/onboarding/doctors")}
+            onClick={() => handlePreviousStep("/onboarding/providers")}
           />
           <Button
             varient="primary"

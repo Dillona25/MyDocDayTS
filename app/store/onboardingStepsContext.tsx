@@ -21,7 +21,7 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
   // An array of each step route that we can recognize with the pathname
   const stepRoutes = [
     "/onboarding",
-    "/onboarding/doctors",
+    "/onboarding/providers",
     "/onboarding/appointments",
   ];
 

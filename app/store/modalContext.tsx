@@ -4,33 +4,33 @@ import { createContext, ReactNode, useContext, useState } from "react";
 
 interface ModalContextType {
   isSignInModalOpen: boolean;
-  isAddDoctorModalOpen: boolean;
+  isAddProviderModalOpen: boolean;
   openSignInModal: () => void;
   closeSignInModal: () => void;
-  openAddDoctorModal: () => void;
-  closeAddDoctorModal: () => void;
+  openAddProviderModal: () => void;
+  closeAddProviderModal: () => void;
 }
 
 const ModalContext = createContext<ModalContextType | null>(null);
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
-  const [isAddDoctorModalOpen, setIsAddDoctorModalOpen] = useState(false);
+  const [isAddProviderModalOpen, setIsAddProviderModalOpen] = useState(false);
 
   const openSignInModal = () => setIsSignInModalOpen(true);
   const closeSignInModal = () => setIsSignInModalOpen(false);
-  const openAddDoctorModal = () => setIsAddDoctorModalOpen(true);
-  const closeAddDoctorModal = () => setIsAddDoctorModalOpen(false);
+  const openAddProviderModal = () => setIsAddProviderModalOpen(true);
+  const closeAddProviderModal = () => setIsAddProviderModalOpen(false);
 
   return (
     <ModalContext.Provider
       value={{
         isSignInModalOpen,
-        isAddDoctorModalOpen,
+        isAddProviderModalOpen,
         openSignInModal,
         closeSignInModal,
-        openAddDoctorModal,
-        closeAddDoctorModal,
+        openAddProviderModal,
+        closeAddProviderModal,
       }}
     >
       {children}

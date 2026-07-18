@@ -1,4 +1,4 @@
-interface DoctorWidgetProps {
+interface ProviderWidgetProps {
   firstName: string;
   lastName: string;
   specialty: string;
@@ -10,7 +10,7 @@ interface DoctorWidgetProps {
   zipCode?: string;
 }
 
-export const DoctorWidget = ({
+export const ProviderWidget = ({
   firstName,
   lastName,
   specialty,
@@ -20,7 +20,7 @@ export const DoctorWidget = ({
   city,
   state,
   zipCode,
-}: DoctorWidgetProps) => {
+}: ProviderWidgetProps) => {
   const fullName = `${firstName} ${lastName}`;
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   const widgetLabel = type === "clinic" ? "Clinic" : "Provider";
