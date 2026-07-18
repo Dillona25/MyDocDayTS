@@ -3,11 +3,11 @@
 import { Button } from "@/app/components/common/button";
 import "../../styles/onboardingProgress.css";
 import { useOnboardingNavigation } from "@/app/hooks/useOnboardingNavigation";
-import { useModal } from "@/app/store/modalContext";
+import { useState } from "react";
 
 export default function DoctorsOnboardingPage() {
   const { handleNextStep, handlePreviousStep } = useOnboardingNavigation();
-  const { openAddDoctorModal } = useModal();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="container">
@@ -36,7 +36,7 @@ export default function DoctorsOnboardingPage() {
               <Button
                 className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-primary hover:underline"
                 buttonText="+ Add Provider"
-                onClick={openAddDoctorModal}
+                onClick={() => setIsModalOpen(true)}
               />
             </div>
           </div>

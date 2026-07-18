@@ -9,6 +9,7 @@ interface Types {
   LabelText: string;
   required: boolean;
   options: readonly SelectOption[];
+  placeholder?: string;
   value?: string;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
 }
@@ -17,6 +18,7 @@ export const Select = ({
   LabelText,
   required,
   options,
+  placeholder = "Select a state",
   value,
   onChange,
 }: Types) => {
@@ -38,7 +40,7 @@ export const Select = ({
           className="w-full bg-transparent pb-2 pt-1 outline-none"
         >
           <option className="text-sm" value="" disabled>
-            Select a state
+            {placeholder}
           </option>
           {options.map((option) => (
             <option key={option.value} value={option.value}>
