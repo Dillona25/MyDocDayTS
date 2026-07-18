@@ -31,7 +31,7 @@ export function mapDatabaseError(error: unknown): AppError | null {
   //   return new AppError(
   //     "Selected provider does not exist.",
   //     400,
-  //     "DOCTOR_NOT_FOUND",
+  //     "PROVIDER_NOT_FOUND",
   //     "providerId",
   //   );
   // }

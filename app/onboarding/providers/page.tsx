@@ -1,78 +1,100 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { Button } from "@/app/components/common/button";
 import { ProviderWidget } from "@/app/components/providers/provider-widget";
 import "../../styles/onboardingProgress.css";
 import { useOnboardingNavigation } from "@/app/hooks/useOnboardingNavigation";
 import { useModal } from "@/app/store/modalContext";
+import { getProviders } from "@/app/api/providers/get/request";
+import type { ReturnedProvider } from "@/backend/services/providers/provider-types";
 
 export default function ProvidersOnboardingPage() {
   const { handleNextStep, handlePreviousStep } = useOnboardingNavigation();
   const { openAddProviderModal } = useModal();
+  const [providers, setProviders] = useState<ReturnedProvider[]>([]);
+  const [providersError, setProvidersError] = useState("");
+
+  useEffect(() => {
+    async function loadProviders() {
+      try {
+        const data = await getProviders();
+        setProviders(data.providers);
+      } catch (error) {
+        setProvidersError(
+          error instanceof Error ? error.message : "Unable to load providers.",
+        );
+      }
+    }
+
+    loadProviders();
+  }, []);
 
   return (
-    <div className="container">
-      <div className="row mt-0 mb-14">
+    <div className="container flex min-h-[calc(100vh-12rem)] flex-col pb-14">
+      <div className="row min-h-0 flex-1">
         <div className="col-12 mx-auto md:col-8">
-          <h1 className="text-[30px] font-semibold text-primary">
-            Add Providers
-          </h1>
-          <p className="text-sm text-body max-w-md">
-            Begin by adding your first few care providers, or you can skip this
-            step and do it later within the MyDocDay dashboard.
-          </p>
-        </div>
-      </div>
-
-      <div className="row mb-14">
-        <div className="col-12 mx-auto md:col-8">
-          <div className="rounded-lg border border-dashed border-primary/25 bg-white px-6 py-6 shadow-sm">
+          <div className="max-h-[calc(100vh-24rem)] overflow-y-auto rounded-lg border border-dashed border-primary/25 bg-white px-6 py-6 shadow-sm">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h2 className="text-xl font-semibold text-primary">
-                  Your Providers
+                  Providers & Clinics
                 </h2>
                 <p className="mt-1 max-w-md text-sm text-body">
-                  Add the care providers you want available in your dashboard.
+                  Add the care providers you want available in your dashboard,
+                  or skip this step and add them later.
                 </p>
               </div>
               <Button
                 className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-primary hover:underline"
                 buttonText="+ Add Provider"
-                onClick={openAddProviderModal}
+                onClick={() =>
+                  openAddProviderModal((provider) =>
+                    setProviders((current) => [provider, ...current]),
+                  )
+                }
               />
             </div>
 
-            <div className="row mt-6">
-              <div className="col-12 mb-4 md:col-6 md:mb-0">
-                <ProviderWidget
-                  firstName="Maya"
-                  lastName="Patel"
-                  specialty="Primary Care"
-                  phoneNumber="(512) 555-0187"
-                  imageUrl="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=160&q=80"
-                  city="Austin"
-                  state="TX"
-                  zipCode="78701"
-                />
+            {providersError && (
+              <p className="mt-4 text-sm font-semibold text-red-400">
+                {providersError}
+              </p>
+            )}
+
+            {providers.length > 0 ? (
+              <div className="row mt-6">
+                {providers.map((provider) => (
+                  <div className="col-12 mb-4 md:col-6" key={provider.id}>
+                    <ProviderWidget
+                      firstName={provider.firstName}
+                      lastName={provider.lastName}
+                      specialty={provider.specialty}
+                      type={provider.type}
+                      phoneNumber={provider.phoneNumber ?? undefined}
+                      imageUrl={provider.imageUrl ?? undefined}
+                      city={provider.city ?? undefined}
+                      state={provider.state ?? undefined}
+                      zipCode={provider.zipCode ?? undefined}
+                    />
+                  </div>
+                ))}
               </div>
-              <div className="col-12 md:col-6">
-                <ProviderWidget
-                  firstName="Austin"
-                  lastName="Family Clinic"
-                  specialty="Family Medicine"
-                  type="clinic"
-                  phoneNumber="(512) 555-0142"
-                  city="Austin"
-                  state="TX"
-                />
+            ) : (
+              <div className="mt-6 rounded-lg border border-dashed border-primary/20 px-6 py-8 text-center">
+                <h3 className="text-lg font-semibold text-primary">
+                  No providers added yet
+                </h3>
+                <p className="mx-auto mt-2 max-w-md text-sm text-body">
+                  Add one now and they will appear here.
+                </p>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
 
-      <div className="row mt-8">
+      <div className="row mt-12 shrink-0">
         <div className="col-12 mx-auto flex justify-between md:col-8">
           <Button
             varient="secondary"
