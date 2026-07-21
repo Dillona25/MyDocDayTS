@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AddProviderModal } from "./components/modals/add-provider-modal";
+import { DeleteProviderModal } from "./components/modals/delete-provider-modal";
 import { SignInModal } from "./components/modals/sign-in-modal";
 import { ModalProvider } from "./store/modalContext";
 import "./styles/globals.css";
@@ -36,6 +37,7 @@ export default function RootLayout({
           {children}
           <SignInModal />
           <AddProviderModal />
+          <DeleteProviderModal />
         </ModalProvider>
       </body>
     </html>

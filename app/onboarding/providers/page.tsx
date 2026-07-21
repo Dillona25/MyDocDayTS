@@ -11,7 +11,7 @@ import type { ReturnedProvider } from "@/backend/services/providers/provider-typ
 
 export default function ProvidersOnboardingPage() {
   const { handleNextStep, handlePreviousStep } = useOnboardingNavigation();
-  const { openAddProviderModal } = useModal();
+  const { openAddProviderModal, openDeleteProviderModal } = useModal();
   const [providers, setProviders] = useState<ReturnedProvider[]>([]);
   const [providersError, setProvidersError] = useState("");
 
@@ -76,6 +76,13 @@ export default function ProvidersOnboardingPage() {
                       city={provider.city ?? undefined}
                       state={provider.state ?? undefined}
                       zipCode={provider.zipCode ?? undefined}
+                      onDelete={() =>
+                        openDeleteProviderModal(provider, (providerId) =>
+                          setProviders((current) =>
+                            current.filter((item) => item.id !== providerId),
+                          ),
+                        )
+                      }
                     />
                   </div>
                 ))}

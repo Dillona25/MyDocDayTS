@@ -8,6 +8,7 @@ interface ProviderWidgetProps {
   city?: string;
   state?: string;
   zipCode?: string;
+  onDelete?: () => void;
 }
 
 export const ProviderWidget = ({
@@ -20,6 +21,7 @@ export const ProviderWidget = ({
   city,
   state,
   zipCode,
+  onDelete,
 }: ProviderWidgetProps) => {
   const fullName = `${firstName} ${lastName}`;
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
@@ -41,10 +43,22 @@ export const ProviderWidget = ({
           </div>
         )}
 
-        <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase text-secondary">
-            {widgetLabel}
-          </p>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs font-semibold uppercase text-secondary">
+              {widgetLabel}
+            </p>
+            {onDelete && (
+              <button
+                type="button"
+                aria-label={`Delete ${fullName}`}
+                className="shrink-0 cursor-pointer text-[11px] font-semibold text-slate-400 hover:text-red-600"
+                onClick={onDelete}
+              >
+                Delete
+              </button>
+            )}
+          </div>
           <h2 className="mt-1 truncate text-lg font-semibold text-primary">
             {fullName}
           </h2>
@@ -53,9 +67,9 @@ export const ProviderWidget = ({
       </div>
 
       {(location || zipCode || phoneNumber) && (
-        <div className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="mt-5 flex items-start justify-between gap-3 border-t border-slate-100 pt-4">
           {(location || zipCode) && (
-            <div>
+            <div className="min-w-0">
               <p className="text-xs font-semibold uppercase text-slate-400">
                 Location
               </p>
@@ -66,7 +80,7 @@ export const ProviderWidget = ({
           )}
 
           {phoneNumber && (
-            <div className={location || zipCode ? "sm:text-right" : ""}>
+            <div className={location || zipCode ? "shrink-0 text-right" : ""}>
               <p className="text-xs font-semibold uppercase text-slate-400">
                 Phone
               </p>

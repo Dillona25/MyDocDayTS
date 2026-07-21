@@ -42,4 +42,8 @@ export const createProviderSchema = z.object({
   zipCode: optionalTrimmedString(20),
 });
 
+export const deleteProviderSchema = z.object({
+  providerId: z.number().int().positive("Provider id is required."),
+});
+
 export type CreateProviderSchemaInput = z.infer<typeof createProviderSchema>;

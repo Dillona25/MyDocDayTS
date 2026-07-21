@@ -14,6 +14,11 @@ export type CreateProviderInput = {
   zipCode?: string;
 };
 
+export type DeleteProviderInput = {
+  userId: number;
+  providerId: number;
+};
+
 export type ReturnedProvider = {
   id: number;
   userId: number;
