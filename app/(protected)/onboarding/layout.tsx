@@ -1,8 +1,8 @@
 "use client";
 import type { ReactNode } from "react";
-import { OnboardingProvider } from "../store/onboardingStepsContext";
-import "../styles/onboardingProgress.css";
-import { mockUser } from "../lib/mockUser";
+import { OnboardingProvider } from "@/app/store/onboardingStepsContext";
+import "@/app/styles/onboardingProgress.css";
+import { mockUser } from "@/app/lib/mockUser";
 
 export default function OnboardingLayout({
   children,

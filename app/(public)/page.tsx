@@ -1,10 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Button } from "./components/common/button";
-import { useModal } from "./store/modalContext";
+import { Button } from "@/app/components/common/button";
+import { useModal } from "@/app/store/modalContext";
 import Link from "next/link";
-import "./styles/landingPage.css";
+import "@/app/styles/landingPage.css";
 
 const features = [
   {

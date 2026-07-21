@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "../components/common/button";
-import { Input } from "../components/forms/input";
-import { Select } from "../components/forms/select";
-import { usStates } from "../data/usStates";
-import { useOnboardingNavigation } from "../hooks/useOnboardingNavigation";
-import { CreateUserFormType } from "../types/form-types";
-import { createUser } from "../api/auth/create-user/request";
+import { Button } from "@/app/components/common/button";
+import { Input } from "@/app/components/forms/input";
+import { Select } from "@/app/components/forms/select";
+import { usStates } from "@/app/data/usStates";
+import { useOnboardingNavigation } from "@/app/hooks/useOnboardingNavigation";
+import { CreateUserFormType } from "@/app/types/form-types";
+import { createUser } from "@/app/api/auth/create-user/request";
 import { AppError } from "@/backend/errors/app-error";
 
 export default function SignupOnboardingPage() {

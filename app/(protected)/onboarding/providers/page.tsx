@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/app/components/common/button";
 import { ProviderWidget } from "@/app/components/providers/provider-widget";
-import "../../styles/onboardingProgress.css";
+import "@/app/styles/onboardingProgress.css";
 import { useOnboardingNavigation } from "@/app/hooks/useOnboardingNavigation";
 import { useModal } from "@/app/store/modalContext";
 import { getProviders } from "@/app/api/providers/get/request";
