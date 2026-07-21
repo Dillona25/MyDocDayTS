@@ -46,11 +46,13 @@ export const AddProviderModal = () => {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isValid },
   } = useForm<ProviderFormData>({
     mode: "onChange",
     defaultValues: initialProviderFormData,
   });
+  const providerType = watch("type");
 
   if (!isAddProviderModalOpen) {
     return null;
@@ -135,7 +137,19 @@ export const AddProviderModal = () => {
             </div>
           </div>
           <div className="row mt-2">
-            <div className="col-12">
+            <div className="col-12 md:col-6">
+              <Select
+                options={providerTypes}
+                LabelText="Is this a provider or clinic?"
+                placeholder="Select a type"
+                required={false}
+                {...register("type")}
+              />
+              <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
+                {errors.type?.message ?? ""}
+              </p>
+            </div>
+            <div className="col-12 md:col-6">
               <Input
                 LabelText="Provider Specialty"
                 required
@@ -165,20 +179,6 @@ export const AddProviderModal = () => {
           </div>
           <div className="row mt-2">
             <div className="col-12">
-              <Select
-                options={providerTypes}
-                LabelText="Is this a provider or clinic?"
-                placeholder="Select a type"
-                required={false}
-                {...register("type")}
-              />
-              <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.type?.message ?? ""}
-              </p>
-            </div>
-          </div>
-          <div className="row mt-2">
-            <div className="col-12">
               <Input
                 LabelText="Provider Image URL"
                 required={false}
@@ -190,49 +190,57 @@ export const AddProviderModal = () => {
               </p>
             </div>
           </div>
-          <div className="row mt-2">
-            <div className="col-12">
-              <Input
-                LabelText="Street Address"
-                required={false}
-                {...register("streetAddress")}
-              />
-              <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.streetAddress?.message ?? ""}
-              </p>
-            </div>
-          </div>
-          <div className="row mt-2">
-            <div className="col-12 md:col-6">
-              <Input LabelText="City" required={false} {...register("city")} />
-              <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.city?.message ?? ""}
-              </p>
-            </div>
-            <div className="col-12 md:col-6">
-              <Select
-                options={usStates}
-                LabelText="State"
-                required={false}
-                {...register("state")}
-              />
-              <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.state?.message ?? ""}
-              </p>
-            </div>
-          </div>
-          <div className="row mt-2">
-            <div className="col-12 md:col-6">
-              <Input
-                LabelText="ZIP Code"
-                required={false}
-                {...register("zipCode")}
-              />
-              <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.zipCode?.message ?? ""}
-              </p>
-            </div>
-          </div>
+          {providerType === "clinic" && (
+            <>
+              <div className="row mt-2">
+                <div className="col-12">
+                  <Input
+                    LabelText="Street Address"
+                    required={false}
+                    {...register("streetAddress")}
+                  />
+                  <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
+                    {errors.streetAddress?.message ?? ""}
+                  </p>
+                </div>
+              </div>
+              <div className="row mt-2">
+                <div className="col-12 md:col-6">
+                  <Input
+                    LabelText="City"
+                    required={false}
+                    {...register("city")}
+                  />
+                  <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
+                    {errors.city?.message ?? ""}
+                  </p>
+                </div>
+                <div className="col-12 md:col-6">
+                  <Select
+                    options={usStates}
+                    LabelText="State"
+                    required={false}
+                    {...register("state")}
+                  />
+                  <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
+                    {errors.state?.message ?? ""}
+                  </p>
+                </div>
+              </div>
+              <div className="row mt-2">
+                <div className="col-12 md:col-6">
+                  <Input
+                    LabelText="ZIP Code"
+                    required={false}
+                    {...register("zipCode")}
+                  />
+                  <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
+                    {errors.zipCode?.message ?? ""}
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
           <div className="row mt-2">
             <div className="col-12 flex justify-end">
               <Button

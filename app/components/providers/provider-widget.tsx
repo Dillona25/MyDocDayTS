@@ -29,7 +29,7 @@ export const ProviderWidget = ({
   const location = [city, state].filter(Boolean).join(", ");
 
   return (
-    <article className="h-full rounded-lg border border-primary/10 bg-white p-5 shadow-sm">
+    <article className="h-full rounded-lg border border-primary/40 bg-slate-50 p-5 shadow-[0_12px_28px_rgb(31_53_87/10%)]">
       <div className="flex items-start gap-4">
         {imageUrl ? (
           <img
@@ -38,7 +38,7 @@ export const ProviderWidget = ({
             src={imageUrl}
           />
         ) : (
-          <div className="grid size-16 shrink-0 place-items-center rounded-lg bg-primary/10 text-lg font-semibold text-primary">
+          <div className="grid size-16 shrink-0 place-items-center rounded-lg bg-primary/15 text-lg font-semibold text-primary">
             {initials}
           </div>
         )}

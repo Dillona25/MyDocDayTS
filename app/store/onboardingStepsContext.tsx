@@ -11,13 +11,25 @@ interface onboardingType {
   completeCurrentStep: () => void;
 }
 
-import { mockUser } from "../lib/mockUser";
-
 import { createContext, ReactNode, useContext, useState } from "react";
 
 const OnboardingContext = createContext<onboardingType | null>(null);
 
-export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
+type InitialOnboarding = {
+  currentStep: number;
+  completedSteps: number[];
+  isComplete: boolean;
+};
+
+type OnboardingProviderProps = {
+  children: ReactNode;
+  initialOnboarding: InitialOnboarding;
+};
+
+export const OnboardingProvider = ({
+  children,
+  initialOnboarding,
+}: OnboardingProviderProps) => {
   // An array of each step route that we can recognize with the pathname
   const stepRoutes = [
     "/onboarding",
@@ -25,12 +37,12 @@ export const OnboardingProvider = ({ children }: { children: ReactNode }) => {
     "/onboarding/appointments",
   ];
 
-  const [step, setStep] = useState<number>(mockUser.onboarding.currentStep);
+  const [step, setStep] = useState<number>(initialOnboarding.currentStep);
   const [completedSteps, setCompletedSteps] = useState<number[]>(
-    mockUser.onboarding.completedSteps,
+    initialOnboarding.completedSteps,
   );
   const [isComplete, setIsComplete] = useState<boolean>(
-    mockUser.onboarding.isComplete,
+    initialOnboarding.isComplete,
   );
 
   const prevStep = () => {
