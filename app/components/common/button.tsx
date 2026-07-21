@@ -19,12 +19,13 @@ export const Button = ({
 
   if (varient === "primary") {
     btnClass =
-      "button-primary text-primary cursor-pointer text-sm font-bold hover:bg-white";
+      "button-primary text-primary cursor-pointer text-sm font-bold hover:bg-white disabled:cursor-not-allowed disabled:opacity-50";
   } else if (varient === "secondary") {
-    btnClass = "button-secondary cursor-pointer text-sm font-bold";
+    btnClass =
+      "button-secondary cursor-pointer text-sm font-bold disabled:cursor-not-allowed disabled:opacity-50";
   }
 
-  let baseClass = `text-sm font-bold cursor-pointer ${className ?? "text-white"}`;
+  let baseClass = `text-sm font-bold cursor-pointer disabled:cursor-not-allowed disabled:opacity-50 ${className ?? "text-white"}`;
 
   return (
     <button

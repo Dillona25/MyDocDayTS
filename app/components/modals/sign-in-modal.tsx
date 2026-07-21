@@ -7,20 +7,26 @@ import { useState } from "react";
 import { SignInFormType } from "@/app/types/form-types";
 import { signInUser } from "@/app/api/auth/sign-in/request";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 type OnboardingStepRoutes = Record<number, string>;
 
 export const SignInModal = () => {
   const router = useRouter();
   const { isSignInModalOpen, closeSignInModal } = useModal();
-  const [formData, setFormData] = useState<SignInFormType>({
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof SignInFormType, string>>
-  >({});
+  const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<SignInFormType>({
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   const onboardingStepRoutes: OnboardingStepRoutes = {
     1: "/onboarding",
     2: "/onboarding/providers",
@@ -31,10 +37,9 @@ export const SignInModal = () => {
     return null;
   }
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setErrors({});
+  async function onSubmit(formData: SignInFormType) {
     setFormError("");
+    setIsLoading(true);
 
     try {
       const data = await signInUser(formData);
@@ -48,7 +53,11 @@ export const SignInModal = () => {
 
       closeSignInModal();
     } catch (error) {
-      console.log(error);
+      setFormError(
+        error instanceof Error ? error.message : "Unable to sign in.",
+      );
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -88,54 +97,58 @@ export const SignInModal = () => {
         </div>
 
         <div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row mb-2">
               <div className="col-12">
                 <Input
                   type="email"
-                  value={formData.email}
-                  onChange={(event) => {
-                    const email = event.target.value;
-
-                    setFormData((current) => ({
-                      ...current,
-                      email,
-                    }));
-                  }}
                   required={true}
                   LabelText="Email"
+                  {...register("email", {
+                    required: "Enter a valid email address.",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Enter a valid email address.",
+                    },
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.email ?? ""}
+                  {errors.email?.message ?? ""}
                 </p>
               </div>
             </div>
             <div className="row mb-2">
               <div className="col-12">
                 <Input
-                  value={formData.password}
-                  onChange={(event) => {
-                    const password = event.target.value;
-
-                    setFormData((current) => ({
-                      ...current,
-                      password,
-                    }));
-                  }}
                   required={true}
                   type="password"
                   LabelText="Password"
+                  {...register("password", {
+                    required: "Password is required.",
+                    validate: (password) =>
+                      password.trim().length > 0 || "Password is required.",
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.password ?? ""}
+                  {errors.password?.message ?? ""}
                 </p>
               </div>
             </div>
             <div className="row">
               <div className="col-12 flex justify-end">
-                <Button buttonText="Sign in" varient="primary" type="submit" />
+                <Button
+                  buttonText={isLoading ? "Signing In..." : "Sign In"}
+                  disabled={!isValid || isLoading}
+                  varient="primary"
+                  type="submit"
+                />
               </div>
             </div>
+            {formError && (
+              <p className="mt-4 text-sm font-semibold text-red-400">
+                {formError}
+              </p>
+            )}
           </form>
           <span className="text-xs text-center text-body">
             Or{" "}

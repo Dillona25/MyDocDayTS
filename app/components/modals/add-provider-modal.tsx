@@ -2,6 +2,7 @@
 
 import { useModal } from "@/app/store/modalContext";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Input } from "../forms/input";
 import { Select } from "../forms/select";
 import { usStates } from "@/app/data/usStates";
@@ -37,49 +38,39 @@ const initialProviderFormData: ProviderFormData = {
 };
 
 export const AddProviderModal = () => {
-  const {
-    isAddProviderModalOpen,
-    closeAddProviderModal,
-    onProviderCreated,
-  } = useModal();
-  const [formData, setFormData] = useState<ProviderFormData>(
-    initialProviderFormData,
-  );
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof ProviderFormData, string>>
-  >({});
+  const { isAddProviderModalOpen, closeAddProviderModal, onProviderCreated } =
+    useModal();
   const [formError, setFormError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm<ProviderFormData>({
+    mode: "onChange",
+    defaultValues: initialProviderFormData,
+  });
 
   if (!isAddProviderModalOpen) {
     return null;
   }
 
-  function getRequiredFieldError(value: string, fieldName: string) {
-    if (value.length === 0) {
-      return "";
-    }
-
-    if (value.trim().length < 2) {
-      return `${fieldName} is required.`;
-    }
-
-    return "";
-  }
-
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setErrors({});
+  async function onSubmit(formData: ProviderFormData) {
     setFormError("");
+    setIsLoading(true);
 
     try {
       const data = await createProvider(formData);
       onProviderCreated?.(data.provider);
-      setFormData(initialProviderFormData);
+      reset(initialProviderFormData);
       closeAddProviderModal();
     } catch (error) {
       setFormError(
         error instanceof Error ? error.message : "Unable to create provider.",
       );
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -112,206 +103,133 @@ export const AddProviderModal = () => {
             &times;
           </button>
         </div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className="row mt-2">
             <div className="col-12 md:col-6">
               <Input
-                value={formData.firstName}
-                onChange={(event) => {
-                  const firstName = event.target.value;
-
-                  setFormData((current) => ({
-                    ...current,
-                    firstName,
-                  }));
-
-                  setErrors((current) => ({
-                    ...current,
-                    firstName: getRequiredFieldError(firstName, "First name"),
-                  }));
-                }}
                 LabelText="First Name"
                 required
+                {...register("firstName", {
+                  required: "First name is required.",
+                  validate: (firstName) =>
+                    firstName.trim().length >= 2 || "First name is required.",
+                })}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.firstName ?? ""}
+                {errors.firstName?.message ?? ""}
               </p>
             </div>
             <div className="col-12 md:col-6">
               <Input
-                value={formData.lastName}
-                onChange={(event) => {
-                  const lastName = event.target.value;
-
-                  setFormData((current) => ({
-                    ...current,
-                    lastName,
-                  }));
-
-                  setErrors((current) => ({
-                    ...current,
-                    lastName: getRequiredFieldError(lastName, "Last name"),
-                  }));
-                }}
                 LabelText="Last Name"
                 required
+                {...register("lastName", {
+                  required: "Last name is required.",
+                  validate: (lastName) =>
+                    lastName.trim().length >= 2 || "Last name is required.",
+                })}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.lastName ?? ""}
+                {errors.lastName?.message ?? ""}
               </p>
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-12">
               <Input
-                value={formData.specialty}
-                onChange={(event) => {
-                  const specialty = event.target.value;
-
-                  setFormData((current) => ({
-                    ...current,
-                    specialty,
-                  }));
-
-                  setErrors((current) => ({
-                    ...current,
-                    specialty: getRequiredFieldError(specialty, "Specialty"),
-                  }));
-                }}
                 LabelText="Provider Specialty"
                 required
+                {...register("specialty", {
+                  required: "Specialty is required.",
+                  validate: (specialty) =>
+                    specialty.trim().length >= 2 || "Specialty is required.",
+                })}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.specialty ?? ""}
+                {errors.specialty?.message ?? ""}
               </p>
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-12">
               <Input
-                value={formData.phoneNumber}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    phoneNumber: event.target.value,
-                  })
-                }
                 LabelText="Phone Number"
                 required={false}
                 type="tel"
+                {...register("phoneNumber")}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.phoneNumber ?? ""}
+                {errors.phoneNumber?.message ?? ""}
               </p>
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-12">
               <Select
-                value={formData.type}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    type: event.target.value as ProviderType,
-                  })
-                }
                 options={providerTypes}
                 LabelText="Is this a provider or clinic?"
                 placeholder="Select a type"
                 required={false}
+                {...register("type")}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.type ?? ""}
+                {errors.type?.message ?? ""}
               </p>
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-12">
               <Input
-                value={formData.imageUrl}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    imageUrl: event.target.value,
-                  })
-                }
                 LabelText="Provider Image URL"
                 required={false}
                 placeholder="Google image link"
+                {...register("imageUrl")}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.imageUrl ?? ""}
+                {errors.imageUrl?.message ?? ""}
               </p>
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-12">
               <Input
-                value={formData.streetAddress}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    streetAddress: event.target.value,
-                  })
-                }
                 LabelText="Street Address"
                 required={false}
+                {...register("streetAddress")}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.streetAddress ?? ""}
+                {errors.streetAddress?.message ?? ""}
               </p>
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-12 md:col-6">
-              <Input
-                value={formData.city}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    city: event.target.value,
-                  })
-                }
-                LabelText="City"
-                required={false}
-              />
+              <Input LabelText="City" required={false} {...register("city")} />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.city ?? ""}
+                {errors.city?.message ?? ""}
               </p>
             </div>
             <div className="col-12 md:col-6">
               <Select
-                value={formData.state}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    state: event.target.value,
-                  })
-                }
                 options={usStates}
                 LabelText="State"
                 required={false}
+                {...register("state")}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.state ?? ""}
+                {errors.state?.message ?? ""}
               </p>
             </div>
           </div>
           <div className="row mt-2">
             <div className="col-12 md:col-6">
               <Input
-                value={formData.zipCode}
-                onChange={(event) =>
-                  setFormData({
-                    ...formData,
-                    zipCode: event.target.value,
-                  })
-                }
                 LabelText="ZIP Code"
                 required={false}
+                {...register("zipCode")}
               />
               <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                {errors.zipCode ?? ""}
+                {errors.zipCode?.message ?? ""}
               </p>
             </div>
           </div>
@@ -320,7 +238,8 @@ export const AddProviderModal = () => {
               <Button
                 varient="primary"
                 type="submit"
-                buttonText="Add Provider"
+                buttonText={isLoading ? "Adding Provider..." : "Add Provider"}
+                disabled={!isValid || isLoading}
               />
             </div>
           </div>

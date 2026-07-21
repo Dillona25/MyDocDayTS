@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Button } from "@/app/components/common/button";
 import { Input } from "@/app/components/forms/input";
 import { Select } from "@/app/components/forms/select";
@@ -13,33 +14,37 @@ import { AppError } from "@/backend/errors/app-error";
 export default function SignupOnboardingPage() {
   const { handleNextStep } = useOnboardingNavigation();
 
-  const [formData, setFormData] = useState<CreateUserFormType>({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    city: "",
-    state: "",
-  });
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof CreateUserFormType, string>>
-  >({});
   const [formError, setFormError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isValid },
+  } = useForm<CreateUserFormType>({
+    mode: "onChange",
+    defaultValues: {
+      email: "",
+      password: "",
+      firstName: "",
+      lastName: "",
+      city: "",
+      state: "",
+    },
+  });
 
-  async function handleSubmit(event: React.SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-    setErrors({});
+  async function onSubmit(formData: CreateUserFormType) {
     setFormError("");
+    setIsLoading(true);
 
     try {
       const user = await createUser(formData);
       await handleNextStep("/onboarding/providers");
     } catch (error) {
       if (error instanceof AppError && error.field === "email") {
-        setErrors((current) => ({
-          ...current,
-          email: error.message,
-        }));
+        setError("email", {
+          message: error.message,
+        });
 
         return;
       }
@@ -47,35 +52,9 @@ export default function SignupOnboardingPage() {
       setFormError(
         error instanceof Error ? error.message : "Unable to create user.",
       );
+    } finally {
+      setIsLoading(false);
     }
-  }
-
-  // Just a lil helper for live password validation. We have min 8 for ZOD so we use min 8 here
-  function getPasswordError(password: string) {
-    if (password.length === 0) {
-      return "";
-    }
-
-    if (password.length < 8) {
-      return "Password must contain at least 8 characters.";
-    }
-
-    return "";
-  }
-
-  // Helper for live email validation. The backend still validates this with Zod.
-  function getEmailError(email: string) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (email.length === 0) {
-      return "";
-    }
-
-    if (!emailPattern.test(email)) {
-      return "Enter a valid email address.";
-    }
-
-    return "";
   }
 
   return (
@@ -93,111 +72,93 @@ export default function SignupOnboardingPage() {
       </div>
       <div className="row">
         <div className="col-12 mx-auto md:col-8">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="row mb-6 md:mb-4">
               <div className="col-12 md:col-6 mb-6 md:mb-0">
                 <Input
                   type="email"
-                  value={formData.email}
-                  onChange={(event) => {
-                    const email = event.target.value;
-
-                    setFormData((current) => ({
-                      ...current,
-                      email,
-                    }));
-
-                    setErrors((current) => ({
-                      ...current,
-                      email: getEmailError(email),
-                    }));
-                  }}
                   required={true}
                   LabelText="Email"
+                  {...register("email", {
+                    required: "Enter a valid email address.",
+                    pattern: {
+                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                      message: "Enter a valid email address.",
+                    },
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.email ?? ""}
+                  {errors.email?.message ?? ""}
                 </p>
               </div>
               <div className="col-12 md:col-6">
                 <Input
-                  value={formData.password}
-                  onChange={(event) => {
-                    const password = event.target.value;
-
-                    setFormData((current) => ({
-                      ...current,
-                      password,
-                    }));
-
-                    setErrors((current) => ({
-                      ...current,
-                      password: getPasswordError(password),
-                    }));
-                  }}
                   required={true}
                   type="password"
                   LabelText="Password"
+                  {...register("password", {
+                    required: "Password must contain at least 8 characters.",
+                    minLength: {
+                      value: 8,
+                      message: "Password must contain at least 8 characters.",
+                    },
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.password ?? ""}
+                  {errors.password?.message ?? ""}
                 </p>
               </div>
             </div>
             <div className="row mb-6 md:mb-4">
               <div className="col-12 md:col-6 mb-6 md:mb-0">
                 <Input
-                  value={formData.firstName}
-                  onChange={(event) =>
-                    setFormData({ ...formData, firstName: event.target.value })
-                  }
                   required={true}
                   LabelText="First Name"
+                  {...register("firstName", {
+                    required: "First name is required.",
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.firstName ?? ""}
+                  {errors.firstName?.message ?? ""}
                 </p>
               </div>
               <div className="col-12 md:col-6">
                 <Input
-                  value={formData.lastName}
-                  onChange={(event) =>
-                    setFormData({ ...formData, lastName: event.target.value })
-                  }
                   required={true}
                   LabelText="Last Name"
+                  {...register("lastName", {
+                    required: "Last name is required.",
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.lastName ?? ""}
+                  {errors.lastName?.message ?? ""}
                 </p>
               </div>
             </div>
             <div className="row mb-8 md:mb-4">
               <div className="col-12 md:col-6 mb-6 md:mb-0">
                 <Input
-                  value={formData.city}
-                  onChange={(event) =>
-                    setFormData({ ...formData, city: event.target.value })
-                  }
                   required={true}
                   LabelText="City"
+                  {...register("city", {
+                    required: "City is required.",
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.city ?? ""}
+                  {errors.city?.message ?? ""}
                 </p>
               </div>
               <div className="col-12 md:col-6">
                 <Select
-                  value={formData.state}
-                  onChange={(event) =>
-                    setFormData({ ...formData, state: event.target.value })
-                  }
                   required={true}
                   LabelText="Select State"
                   options={usStates}
+                  {...register("state", {
+                    required: "State is required.",
+                  })}
                 />
                 <p className="mt-2 min-h-5 text-xs font-semibold text-red-400">
-                  {errors.state ?? ""}
+                  {errors.state?.message ?? ""}
                 </p>
               </div>
             </div>
@@ -206,10 +167,18 @@ export default function SignupOnboardingPage() {
                 <Button
                   varient="primary"
                   type="submit"
-                  buttonText="Next Step"
+                  buttonText={
+                    isLoading ? "Creating Account..." : "Create Account"
+                  }
+                  disabled={!isValid || isLoading}
                 />
               </div>
             </div>
+            {formError && (
+              <p className="mt-4 text-sm font-semibold text-red-400">
+                {formError}
+              </p>
+            )}
           </form>
         </div>
       </div>

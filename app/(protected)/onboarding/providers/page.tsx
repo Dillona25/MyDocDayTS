@@ -10,7 +10,7 @@ import { getProviders } from "@/app/api/providers/get/request";
 import type { ReturnedProvider } from "@/backend/services/providers/provider-types";
 
 export default function ProvidersOnboardingPage() {
-  const { handleNextStep, handlePreviousStep } = useOnboardingNavigation();
+  const { handleNextStep } = useOnboardingNavigation();
   const { openAddProviderModal, openDeleteProviderModal } = useModal();
   const [providers, setProviders] = useState<ReturnedProvider[]>([]);
   const [providersError, setProvidersError] = useState("");
@@ -102,12 +102,7 @@ export default function ProvidersOnboardingPage() {
       </div>
 
       <div className="row mt-12 shrink-0">
-        <div className="col-12 mx-auto flex justify-between md:col-8">
-          <Button
-            varient="secondary"
-            buttonText="Previous Step"
-            onClick={() => handlePreviousStep("/onboarding")}
-          />
+        <div className="col-12 mx-auto flex justify-end md:col-8">
           <Button
             varient="primary"
             buttonText="Next Step"

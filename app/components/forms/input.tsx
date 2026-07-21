@@ -1,22 +1,15 @@
-import type { ChangeEventHandler } from "react";
+import { forwardRef } from "react";
+import type { InputHTMLAttributes } from "react";
 
-interface Types {
+type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   LabelText: string;
-  placeholder?: string;
   required: boolean;
-  type?: string;
-  value?: string;
-  onChange?: ChangeEventHandler<HTMLInputElement>;
-}
+};
 
-export const Input = ({
-  LabelText,
-  required,
-  placeholder,
-  type,
-  value,
-  onChange,
-}: Types) => {
+export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { LabelText, required, className, ...inputProps },
+  ref,
+) {
   return (
     <div className="flex flex-col">
       <fieldset className="group min-w-0 rounded-lg border border-gray-500 px-3 focus-within:border-secondary">
@@ -29,14 +22,12 @@ export const Input = ({
           )}
         </legend>
         <input
-          type={type}
-          value={value}
+          ref={ref}
           required={required}
-          placeholder={placeholder}
-          onChange={onChange}
-          className="w-full bg-transparent pb-2 pt-1 outline-none"
+          className={`w-full bg-transparent pb-2 pt-1 outline-none ${className ?? ""}`}
+          {...inputProps}
         />
       </fieldset>
     </div>
   );
-};
+});
