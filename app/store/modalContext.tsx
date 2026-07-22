@@ -9,6 +9,7 @@ type ProviderDeletedHandler = (providerId: number) => void;
 interface ModalContextType {
   isSignInModalOpen: boolean;
   isAddProviderModalOpen: boolean;
+  isAddAppointmentModalOpen: boolean;
   isDeleteProviderModalOpen: boolean;
   onProviderCreated?: ProviderCreatedHandler;
   providerToDelete?: ReturnedProvider;
@@ -17,6 +18,8 @@ interface ModalContextType {
   closeSignInModal: () => void;
   openAddProviderModal: (onProviderCreated?: ProviderCreatedHandler) => void;
   closeAddProviderModal: () => void;
+  openAddAppointmentModal: () => void;
+  closeAddAppointmentModal: () => void;
   openDeleteProviderModal: (
     provider: ReturnedProvider,
     onProviderDeleted?: ProviderDeletedHandler,
@@ -29,6 +32,8 @@ const ModalContext = createContext<ModalContextType | null>(null);
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
   const [isSignInModalOpen, setIsSignInModalOpen] = useState(false);
   const [isAddProviderModalOpen, setIsAddProviderModalOpen] = useState(false);
+  const [isAddAppointmentModalOpen, setIsAddAppointmentModalOpen] =
+    useState(false);
   const [isDeleteProviderModalOpen, setIsDeleteProviderModalOpen] =
     useState(false);
   const [onProviderCreated, setOnProviderCreated] =
@@ -47,6 +52,8 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     setIsAddProviderModalOpen(false);
     setOnProviderCreated(undefined);
   };
+  const openAddAppointmentModal = () => setIsAddAppointmentModalOpen(true);
+  const closeAddAppointmentModal = () => setIsAddAppointmentModalOpen(false);
   const openDeleteProviderModal = (
     provider: ReturnedProvider,
     handler?: ProviderDeletedHandler,
@@ -66,6 +73,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
       value={{
         isSignInModalOpen,
         isAddProviderModalOpen,
+        isAddAppointmentModalOpen,
         isDeleteProviderModalOpen,
         onProviderCreated,
         providerToDelete,
@@ -74,6 +82,8 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         closeSignInModal,
         openAddProviderModal,
         closeAddProviderModal,
+        openAddAppointmentModal,
+        closeAddAppointmentModal,
         openDeleteProviderModal,
         closeDeleteProviderModal,
       }}
